@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="/socket.io/socket.io.js"></script>
+  <title>poc for web socket</title>
+</head>
+
+<body>
+  <h3>Select the button to incement the state</h3>
+  <button onclick="onClickButton()">+1</button>
+  
+
+  <hr />
+  <button onclick="getData()">Get Data</button>
+  <em id="data-string">No Data Present</em>
+
+  <script>
+    var socket = io('http://localhost:3000');
+    socket.on('connect', function () { setTimeout(()=>{console.log('connected to socket');},4000)});
+    socket.on('incremented', function (data) {
+      document.getElementById('data-string').innerHTML = JSON.stringify(data);
+    });
+
+    // socket.on('event', function (data) { console.log('running....'); });
+    // socket.on('disconnect', function () { console.log('disconnected'); });
+    function onClickButton() {
+      socket.emit('increment');
+    }
+    function getData(pos) {
+      socket.emit('getData');
+    }
+  </script>
+</body>
+
+</html>
